@@ -62,8 +62,8 @@ app.get('/login', (req, res) => {
 
 app.get('/about', (req, res) => {
        const dados = [
-        {titulo: "Post 1", conteudo: "Conteúdo post 1"}
-        {titulo: "Post 2", conteudo: "Conteúdo post 2"}
+        {titulo: "Post 1", conteudo: "Conteúdo post 1"},
+        {titulo: "Post 2", conteudo: "Conteúdo post 2"},
         {titulo: "Post 3", conteudo: "Conteúdo post 3"}
        ];
 
