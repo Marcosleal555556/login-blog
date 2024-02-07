@@ -65,13 +65,10 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/posts', (req, res) => {
-    const dados = [
-     {titulo: "Post 1", conteudo: "Conteúdo post 1"},
-     {titulo: "Post 2", conteudo: "Conteúdo post 2"},
-     {titulo: "Post 3", conteudo: "Conteúdo post 3"}
-    ];
+   
+    const query = 'SELECT * FROM Postagens';
 
- res.render('pages/about', { req: req, posts: dados });
+ res.render('pages/pgposts', { req: req, posts: dados });
 });
 
 // Rota para processar o formulário de login
