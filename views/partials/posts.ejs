@@ -1,10 +1,19 @@
 <div class="containerPosts">
     <h1>Postagens</h1>
+
+    <style>
+        h1 {
+          text-align: center; /* Centraliza o texto */
+        }
+      </style>
+
     <div class="cardPosts">
         <% posts.forEach(post => { %>
             <div class="cardBody">
-                <h5 class="cardTitle"><%= post.titulo %></h5>
-                <p class="cardText"><%= post.conteudo %></p>
+                <h5 class="cardTitle"><strong>Título:</strong><%= post.titulo %></h5>
+                <h5 class="cardText"><strong>Autor:</strong> <%= post.autor %></h5>
+                <h5 class="cardText"><strong>Data de Postagem:</strong> <%= post.datapostagem %></h5>
+                <h5 class="cardText"><strong>Conteúdo:</strong><%= post.conteudo %></h5>
             </div>
         <% }); %>
     </div>
