@@ -3,6 +3,8 @@
 
 <head>
     <%- include('../partials/head'); %>
+
+    
 </head>
 
 <body class="container">
@@ -11,7 +13,7 @@
         <%- include('../partials/header'); %>
         <% if(req.session.loggedin) { %>
         <%- include('../partials/menu_dashboard'); %>
-        <% } %>        
+        <% } %>
     </header>
 
     <main>
@@ -21,6 +23,4 @@
     <footer>
         <%- include('../partials/footer'); %>
     </footer>
-    
-
 </body>

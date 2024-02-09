@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Tempo de geração: 03/02/2024 às 09:04
+-- Tempo de geração: 03-Fev-2024 às 09:04
 -- Versão do servidor: 8.0.36-0ubuntu0.22.04.1
--- Versão do PHP: 8.1.2-1ubuntu2.14
+-- versão do PHP: 8.1.2-1ubuntu2.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,10 +24,10 @@ CREATE DATABASE IF NOT EXISTS mydb;
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `Postagens`
+-- Estrutura da tabela `posts`
 --
 
-CREATE TABLE `Postagens` (
+CREATE TABLE `posts` (
   `id` int NOT NULL,
   `titulo` text NOT NULL,
   `conteudo` text NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE `Postagens` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `users`
+-- Estrutura da tabela `users`
 --
 
 CREATE TABLE `users` (
@@ -48,36 +48,36 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Tabela de usuários';
 
 --
--- Despejando dados para a tabela `users`
+-- Extraindo dados da tabela `users`
 --
 
 INSERT INTO `users` (`id`, `username`, `password`) VALUES
-(1, 'marcos', 'dfadc855249b015fd2bb015c0b099b2189c58748');
+(1, 'aluno', '23a6a3cf06cfd8b1a6cda468e5756a6a6a1d21e7');
 
 --
 -- Índices para tabelas despejadas
 --
 
 --
--- Índices de tabela `Postagens`
+-- Índices para tabela `posts`
 --
-ALTER TABLE `Postagens`
+ALTER TABLE `posts`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices de tabela `users`
+-- Índices para tabela `users`
 --
 ALTER TABLE `users`
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- AUTO_INCREMENT para tabelas despejadas
+-- AUTO_INCREMENT de tabelas despejadas
 --
 
 --
--- AUTO_INCREMENT de tabela `Postagens`
+-- AUTO_INCREMENT de tabela `posts`
 --
-ALTER TABLE `Postagens`
+ALTER TABLE `posts`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
