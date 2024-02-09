@@ -67,7 +67,7 @@ app.get('/about', (req, res) => {
 
 app.get('/posts', (req, res) => {
    
-    const query = 'SELECT * FROM posts;'
+    const query = 'SELECT * FROM Postagens;'
 
     db.query(query, [], (err, results) => {
         if (err) throw err;
@@ -102,7 +102,7 @@ app.post('/cadastrar_posts', (req, res) => {
     const datapostagem = new Date();
 
     // const query = 'SELECT * FROM users WHERE username = ? AND password = SHA1(?)';
-    const query = 'INSERT INTO posts (titulo, conteudo, autor, datapostagem) VALUES (?, ?, ?, ?)';
+    const query = 'INSERT INTO Postagens (titulo, conteudo, autor, datapostagem) VALUES (?, ?, ?, ?)';
 
     db.query(query, [titulo, conteudo, autor, datapostagem], (err, results) => {
         if (err) throw err;

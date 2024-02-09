@@ -1,6 +1,12 @@
-<div>
-
-    <% posts.forEach(post=> { %>
-     <h1><%= post.titulo %></h1>
-    <% }) %>
+<div class="containerPosts">
+    <h1>Postagens</h1>
+    <div class="cardPosts">
+        <% posts.forEach(post => { %>
+            <div class="cardBody">
+                <h5 class="cardTitle"><%= post.titulo %></h5>
+                <p class="cardText"><%= post.conteudo %></p>
+            </div>
+        <% }); %>
+    </div>
 </div>
+
