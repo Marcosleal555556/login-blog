@@ -66,14 +66,20 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/posts', (req, res) => {
-   
     const query = 'SELECT * FROM Postagens;'
 
-    db.query(query, [], (err, results) => {
+    // Consulta para contar o número total de postagens
+    db.query('SELECT COUNT(*) AS totalPosts FROM Postagens', (err, countResults) => {
         if (err) throw err;
-        res.render('pages/pgposts', { req: req, posts: results });
+
+        db.query(query, [], (err, results) => {
+            if (err) throw err;
+            const totalPosts = countResults[0].totalPosts; // Extrai o total de postagens da consulta de contagem
+            res.render('pages/pgposts', { req: req, posts: results, totalPosts: totalPosts });
+        });
     });
 });
+
 
 // Rota para processar o formulário de login
 app.post('/login', (req, res) => {
@@ -95,13 +101,13 @@ app.post('/login', (req, res) => {
     });
 });
 
-// Rota para processar o formulário de caastro depostagem
+// Rota para processar o formulário de cadastro depostagem
 app.post('/cadastrar_posts', (req, res) => {
     const { titulo, conteudo } = req.body;
-    const autor = "admin";
-    const datapostagem = new Date();
+    const autor = req.session.username; // Modifique esta linha
 
-    // const query = 'SELECT * FROM users WHERE username = ? AND password = SHA1(?)';
+    
+
     const query = 'INSERT INTO Postagens (titulo, conteudo, autor, datapostagem) VALUES (?, ?, ?, ?)';
 
     db.query(query, [titulo, conteudo, autor, datapostagem], (err, results) => {
@@ -111,8 +117,29 @@ app.post('/cadastrar_posts', (req, res) => {
             console.log('Cadastro de postagem OK')
             res.redirect('/dashboard');
         } else {
-            // res.send('Credenciais incorretas. <a href="/">Tente novamente</a>');
             res.send('Cadastro de post não efetuado');
+        }
+    });
+});
+
+app.post('/delete_post/:id', (req, res) => {
+    const postId = req.params.id;
+    const username = req.session.username;
+
+    // Verifica se o usuário logado é o autor da postagem ou um administrador
+    db.query('SELECT * FROM posts WHERE id = ? AND (autor = ? OR autor = "admin")', [postId, username], (err, results) => {
+        if (err) throw err;
+
+        if (results.length > 0) {
+            // Exclui a postagem do banco de dados
+            db.query('DELETE FROM posts WHERE id = ?', [postId], (err, result) => {
+                if (err) throw err;
+                console.log(`Postagem com id ${postId} excluída com sucesso.`);
+                res.redirect('/posts');
+            });
+        } else {
+            console.log(`Usuário ${username} não tem permissão para excluir a postagem com id ${postId}.`);
+            res.redirect('/posts');
         }
     });
 });
@@ -159,32 +186,21 @@ app.post('/cadastrar', (req, res) => {
     const { username, password } = req.body;
 
     // Verifica se o usuário já existe
-    const query = 'SELECT * FROM users WHERE username = ? AND password = SHA1(?)';
+    const query = 'INSERT INTO users (username, password) VALUES (?, SHA1(?))';
     db.query(query, [username, password], (err, results) => {
-        if (err) throw err;
-        // Caso usuário já exista no banco de dados, redireciona para a página de cadastro inválido
-        if (results.length > 0) {
-            console.log(`Usuário ${username} já existe no banco de dados. redirecionando`);
-            res.redirect('/register_failed');
-        } else {
-            // Cadastra o usuário caso não exista
-            const query = 'INSERT INTO users (username, password) VALUES (?, SHA1(?))';
-            console.log(`POST /CADASTRAR -> query -> ${query}`);
-            db.query(query, [username, password], (err, results) => {
-                console.log(results);
-                //console.log(`POST /CADASTRAR -> results -> ${results}`);
-
-                if (err) {
-                    console.log(`ERRO NO CADASTRO: ${err}`);
-                    throw err;
-                }
-                if (results.affectedRows > 0) {
-                    req.session.loggedin = true;
-                    req.session.username = username;
-                    res.redirect('/register_ok');
-                }
-            });
+        if (err) {
+            // Verifica se o erro é devido a uma violação da restrição de username único
+            if (err.code === 'ER_DUP_ENTRY' && err.sqlMessage.includes('users.unique_username')) {
+                return res.redirect('/register_failed');
+            } else {
+                // Se o erro não for devido a um username duplicado, envia uma mensagem genérica de erro
+                console.error('Erro no cadastro:', err);
+                return res.send('Ocorreu um erro ao cadastrar o usuário. Por favor, tente novamente mais tarde.');
+            }
         }
+        
+        console.log('Usuário cadastrado com sucesso:', username);
+        res.redirect('/register_ok');
     });
 });
 
