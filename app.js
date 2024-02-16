@@ -202,6 +202,8 @@ app.get('/cadastrar_posts', (req, res) => {
     }
 });
 
+
+
 // Rotas para cadastrar
 app.get('/cadastrar', (req, res) => {
     if (!req.session.loggedin) {
