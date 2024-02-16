@@ -101,12 +101,12 @@ app.post('/login', (req, res) => {
     });
 });
 
-// Rota para processar o formulário de cadastro depostagem
+// Rota para processar o formulário de caastro depostagem
 app.post('/cadastrar_posts', (req, res) => {
     const { titulo, conteudo } = req.body;
     const autor = req.session.username; // Modifique esta linha
 
-    
+    const datapostagem = new Date();
 
     const query = 'INSERT INTO Postagens (titulo, conteudo, autor, datapostagem) VALUES (?, ?, ?, ?)';
 
@@ -132,7 +132,7 @@ app.post('/delete_post/:id', (req, res) => {
 
         if (results.length > 0) {
             // Exclui a postagem do banco de dados
-            db.query('DELETE FROM posts WHERE id = ?', [postId], (err, result) => {
+            db.query('DELETE FROM Postagens WHERE id = ?', [postId], (err, result) => {
                 if (err) throw err;
                 console.log(`Postagem com id ${postId} excluída com sucesso.`);
                 res.redirect('/posts');
@@ -143,6 +143,36 @@ app.post('/delete_post/:id', (req, res) => {
         }
     });
 });
+
+
+// Rota para exibir a página de edição de postagem
+app.get('/edit/:postId', (req, res) => {
+    const postId = req.params.postId;
+    const query = 'SELECT * FROM Postagens WHERE id = ?';
+    db.query(query, [postId], (err, results) => {
+        if (err) throw err;
+        if (results.length > 0) {
+            const post = results[0];
+            res.render('pages/edit_post', { req: req, post: post });
+        } else {
+            res.status(404).send('Postagem não encontrada.');
+        }
+    });
+});
+
+// Rota para processar a edição da postagem
+app.post('/edit/:postId', (req, res) => {
+    const postId = req.params.postId;
+    const { titulo, conteudo } = req.body;
+    const query = 'UPDATE Postagens SET titulo = ?, conteudo = ? WHERE id = ?';
+    db.query(query, [titulo, conteudo, postId], (err, result) => {
+        if (err) throw err;
+        res.redirect('/'); // Redirecionar para a página inicial após a edição
+    });
+});
+
+
+
 
 // const query = 'INSERT INTO users (username, password) VALUES (?, SHA1(?))';
 // console.log(`POST /CADASTRAR -> query -> ${query}`);

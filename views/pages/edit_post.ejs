@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ptbr">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+    <header class="container">
+        <%- include('../partials/header'); %>
+    </header>
+    <main class="container">
+        <div class="container-sm border border-danger rounded-lg">
+            <div class="form-group">
+                <h3 style="text-align: center;">Editar postagem</h3>
+                <form action="/edit/<%= post.id %>" method="post">
+                    <div class="form-group">
+                        <div><label for="titulo">Título da postagem</label></div>
+                        <div><input type="text" id="titulo" name="titulo" value="<%= post.titulo %>" required class="form-control"></div>
+                    </div>
+                    <div class="form-group">
+                        <div><label for="conteudo">Conteúdo da postagem</label></div>
+                        <div><textarea id="conteudo" name="conteudo" required class="form-control"><%= post.conteudo %></textarea></div>
+                    </div>
+                    <div><button type="submit" class="form-control btn btn-dark">Salvar alterações</button></div>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+</body>
+</html>

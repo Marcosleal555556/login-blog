@@ -3,37 +3,42 @@
 
 <head>
     <%- include('../partials/head'); %>
-<style>
-    /* Estilos para organizar os posts */
-.cardBody {
-    margin-bottom: 20px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    <!-- Inclua a folha de estilo Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Inclua sua folha de estilo personalizada -->
+    <link href="/path/to/styles.css" rel="stylesheet">
+    <style>
+        /* styles.css */
+
+/* Estilos para o cabeçalho */
+
+/* Estilos para o conteúdo principal */
+main {
+    padding: 20px 0;
 }
 
-.cardTitle {
-    font-size: 1.25rem; /* Tamanho padrão para o título dos posts */
-}
+/* Estilos para o rodapé */
 
-</style>
-    
+
+    </style>
 </head>
 
 <body class="container">
 
-    <header>
+    <header class="bg-primary text-white">
         <%- include('../partials/header'); %>
         <% if(req.session.loggedin) { %>
         <%- include('../partials/menu_dashboard'); %>
-        <% } %>
+        <% } %>        
     </header>
 
-    <main>
+    <main class="mt-4">
+        <h2>Total de Postagens: <%= totalPosts %></h2>
         <%- include('../partials/posts'); %>
     </main>
 
-    <footer>
+    <footer class="bg-dark text-white mt-4">
         <%- include('../partials/footer'); %>
     </footer>
 </body>
+</html>
